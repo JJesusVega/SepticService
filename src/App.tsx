@@ -92,14 +92,20 @@ function ServiceDetailRoute({ content, language }: ServiceDetailRouteProps) {
 
   return (
     <section className="section service-detail-section">
-      <Link className="back-link" to="/services">← {language === 'en' ? 'Back to services' : 'Volver a servicios'}</Link>
+      <Link className="back-link" to="/services">
+        ← {language === 'en' ? 'Back to services' : 'Volver a servicios'}
+      </Link>
       <div className="service-detail-card">
         <div className="service-detail-content">
           <div className="service-detail-copy">
             <p className="eyebrow">{language === 'en' ? 'Service detail' : 'Detalle del servicio'}</p>
             <h2>{service.detailTitle}</h2>
             <p>{service.detailDescription}</p>
-            <ul>{service.highlights.map((highlight) => <li key={highlight}>{highlight}</li>)}</ul>
+            <ul>
+              {service.highlights.map((highlight) => (
+                <li key={highlight}>{highlight}</li>
+              ))}
+            </ul>
           </div>
           <img className="service-detail-image" src={getServiceIllustration(service.slug)} alt={service.title} />
         </div>
@@ -112,6 +118,8 @@ function AppShell() {
   const [language, setLanguage] = useState<Language>('en')
   const [servicesOpen, setServicesOpen] = useState(false)
   const [selectedArea, setSelectedArea] = useState<string | null>(null)
+
+  const closeServicesMenu = () => setServicesOpen(false)
 
   const content = useMemo(() => siteContent[language], [language])
 
@@ -127,6 +135,15 @@ function AppShell() {
     return `https://www.google.com/maps?q=${encodeURIComponent(areaMapQuery)}&output=embed&markers=size:mid%7Ccolor:red%7Clabel:S`
   }, [areaMapQuery])
 
+  const contactEmailHref = useMemo(() => {
+    const subject = language === 'en' ? 'Service request' : 'Solicitud de servicio'
+    const body = language === 'en'
+      ? 'Hello Sanchez Septic Services,\n\nI would like to request more information about your services.'
+      : 'Hola Sanchez Septic Services,\n\nMe gustaria solicitar mas informacion sobre sus servicios.'
+
+    return `mailto:${content.contact.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+  }, [content.contact.email, language])
+
   return (
     <div className="app-shell">
       <header className="topbar" id="home">
@@ -139,8 +156,8 @@ function AppShell() {
         </div>
 
         <nav className="main-nav" aria-label="Primary navigation">
-          <Link to="/">{language === 'en' ? 'Home' : 'Inicio'}</Link>
-          <Link to="/about">{language === 'en' ? 'About' : 'Nosotros'}</Link>
+          <Link to="/" onClick={closeServicesMenu}>{language === 'en' ? 'Home' : 'Inicio'}</Link>
+          <Link to="/about" onClick={closeServicesMenu}>{language === 'en' ? 'About' : 'Nosotros'}</Link>
           <div className="nav-dropdown">
             <button
               type="button"
@@ -151,22 +168,22 @@ function AppShell() {
             </button>
             {servicesOpen ? (
               <div className="nav-dropdown-menu">
-                <Link to="/services" onClick={() => setServicesOpen(false)}>
+                <Link to="/services" onClick={closeServicesMenu}>
                   {language === 'en' ? 'All services' : 'Todos los servicios'}
                 </Link>
                 {content.services.map((item) => (
-                  <Link key={item.slug} to={`/services/${item.slug}`} onClick={() => setServicesOpen(false)}>
+                  <Link key={item.slug} to={`/services/${item.slug}`} onClick={closeServicesMenu}>
                     {item.title}
                   </Link>
                 ))}
               </div>
             ) : null}
           </div>
-          <Link to="/gallery">{language === 'en' ? 'Gallery' : 'Galería'}</Link>
-          <Link to="/contact">{language === 'en' ? 'Contact' : 'Contacto'}</Link>
-          <Link to="/faqs">{language === 'en' ? 'FAQs' : 'Preguntas'}</Link>
-          <Link to="/tips">{language === 'en' ? 'Tips' : 'Consejos'}</Link>
-          <Link to="/area">{language === 'en' ? 'Area' : 'Cobertura'}</Link>
+          <Link to="/gallery" onClick={closeServicesMenu}>{language === 'en' ? 'Gallery' : 'Galería'}</Link>
+          <Link to="/contact" onClick={closeServicesMenu}>{language === 'en' ? 'Contact' : 'Contacto'}</Link>
+          <Link to="/faqs" onClick={closeServicesMenu}>{language === 'en' ? 'FAQs' : 'Preguntas'}</Link>
+          <Link to="/tips" onClick={closeServicesMenu}>{language === 'en' ? 'Tips' : 'Consejos'}</Link>
+          <Link to="/area" onClick={closeServicesMenu}>{language === 'en' ? 'Area' : 'Cobertura'}</Link>
         </nav>
 
         <div className="lang-switcher" aria-label="Language selector">
@@ -249,7 +266,25 @@ function AppShell() {
               </>
             }
           />
-          <Route path="/about" element={<section className="section"><div className="section-heading"><p className="eyebrow">{content.about.title}</p><h2>{content.about.title}</h2></div><div className="about-grid"><div>{content.about.body.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}</div><div className="highlight-card">{content.about.highlight}</div></div></section>} />
+          <Route
+            path="/about"
+            element={
+              <section className="section">
+                <div className="section-heading">
+                  <p className="eyebrow">{content.about.title}</p>
+                  <h2>{content.about.title}</h2>
+                </div>
+                <div className="about-grid">
+                  <div>
+                    {content.about.body.map((paragraph) => (
+                      <p key={paragraph}>{paragraph}</p>
+                    ))}
+                  </div>
+                  <div className="highlight-card">{content.about.highlight}</div>
+                </div>
+              </section>
+            }
+          />
           <Route
             path="/services"
             element={
@@ -274,12 +309,162 @@ function AppShell() {
             }
           />
           <Route path="/services/:slug" element={<ServiceDetailRoute content={content} language={language} />} />
-          <Route path="/gallery" element={<section className="section" id="gallery"><div className="section-heading"><p className="eyebrow">{content.nav[3].label}</p><h2>{content.nav[3].label}</h2></div><div className="card-grid">{content.gallery.map((item) => <article key={item.title} className="gallery-card"><h3>{item.title}</h3><p>{item.caption}</p></article>)}</div></section>} />
-          <Route path="/contact" element={<section className="section contact-section" id="contact"><div className="section-heading"><p className="eyebrow">{content.contact.title}</p><h2>{content.contact.formTitle}</h2></div><div className="contact-grid"><div className="info-card"><p>{content.contact.description}</p><p>{content.contact.phone}</p><p>{content.contact.email}</p><p>{content.contact.address}</p></div><form className="contact-form"><label><span>{language === 'en' ? 'Name' : 'Nombre'}</span><input type="text" placeholder={language === 'en' ? 'Your name' : 'Tu nombre'} /></label><label><span>{language === 'en' ? 'Email' : 'Correo'}</span><input type="email" placeholder={language === 'en' ? 'you@example.com' : 'tu@ejemplo.com'} /></label><label><span>{language === 'en' ? 'Message' : 'Mensaje'}</span><textarea rows={4} placeholder={language === 'en' ? 'Tell us how we can help' : 'Cuéntanos cómo podemos ayudar'} /></label><button type="submit" className="primary-btn">{language === 'en' ? 'Send request' : 'Enviar solicitud'}</button></form></div></section>} />
-          <Route path="/faqs" element={<section className="section" id="faqs"><div className="section-heading"><p className="eyebrow">{content.nav[5].label}</p><h2>{content.nav[5].label}</h2></div><div className="card-grid">{content.faqs.map((item) => <article key={item.question} className="info-card"><h3>{item.question}</h3><p>{item.answer}</p></article>)}</div></section>} />
-          <Route path="/tips" element={<section className="section" id="tips"><div className="section-heading"><p className="eyebrow">{content.nav[6].label}</p><h2>{content.nav[6].label}</h2></div><div className="card-grid">{content.tips.map((tip) => <article key={tip.title} className="info-card"><img className="card-image" src={getTipIllustration(tip.title)} alt={tip.title} /><h3>{tip.title}</h3><p>{tip.description}</p></article>)}</div></section>} />
-          <Route path="/area" element={<section className="section" id="area"><div className="section-heading"><p className="eyebrow">{content.nav[7].label}</p><h2>{content.nav[7].label}</h2></div><div className="area-layout"><div className="info-card area-summary-card"><h3>{language === 'en' ? 'Service areas' : 'Áreas de servicio'}</h3><ul className="area-list"><li><button type="button" className={`area-list-button ${selectedArea === null ? 'active' : ''}`} onClick={() => setSelectedArea(null)} aria-pressed={selectedArea === null}><span className="area-marker" aria-hidden="true"><svg viewBox="0 0 64 64" role="img"><rect x="12" y="18" width="40" height="28" rx="6" fill="#b42318" /><rect x="22" y="12" width="20" height="10" rx="4" fill="#7a4a4a" /><rect x="28" y="24" width="8" height="14" rx="2" fill="#fff" /></svg></span><span className="area-list-content"><span>{language === 'en' ? 'All locations' : 'Todas las ubicaciones'}</span><p>{language === 'en' ? 'Show the full covered service area.' : 'Muestra toda el área de servicio cubierta.'}</p></span></button></li>{content.area.map((item) => <li key={item.title}><button type="button" className={`area-list-button ${selectedArea === item.title ? 'active' : ''}`} onClick={() => setSelectedArea(item.title)} aria-pressed={selectedArea === item.title}><span className="area-marker" aria-hidden="true"><svg viewBox="0 0 64 64" role="img"><rect x="12" y="18" width="40" height="28" rx="6" fill="#b42318" /><rect x="22" y="12" width="20" height="10" rx="4" fill="#7a4a4a" /><rect x="28" y="24" width="8" height="14" rx="2" fill="#fff" /></svg></span><span className="area-list-content"><span>{item.title}</span><p>{item.description}</p></span></button></li>)}</ul></div><div className="map-card"><iframe title="Service area map" src={mapEmbedUrl} loading="lazy" referrerPolicy="no-referrer-when-downgrade" allowFullScreen /></div></div></section>} />
-        
+          <Route
+            path="/gallery"
+            element={
+              <section className="section" id="gallery">
+                <div className="section-heading">
+                  <p className="eyebrow">{content.nav[3].label}</p>
+                  <h2>{content.nav[3].label}</h2>
+                </div>
+                <div className="card-grid">
+                  {content.gallery.map((item) => (
+                    <article key={item.title} className="gallery-card">
+                      <h3>{item.title}</h3>
+                      <p>{item.caption}</p>
+                    </article>
+                  ))}
+                </div>
+              </section>
+            }
+          />
+          <Route
+            path="/contact"
+            element={
+              <section className="section contact-section" id="contact">
+                <div className="section-heading">
+                  <p className="eyebrow">{content.contact.title}</p>
+                  <h2>{content.contact.formTitle}</h2>
+                </div>
+                <div className="contact-grid">
+                  <div className="info-card">
+                    <p>{content.contact.description}</p>
+                    <p>{content.contact.phone}</p>
+                    <p>{content.contact.email}</p>
+                    <p>{content.contact.address}</p>
+                  </div>
+                  <div className="contact-form">
+                    <a className="primary-btn contact-action" href={contactEmailHref}>
+                      {language === 'en' ? 'Open email app' : 'Abrir app de correo'}
+                    </a>
+                    <p className="contact-hint">
+                      {language === 'en'
+                        ? 'This opens your device email app with our address ready to use.'
+                        : 'Esto abre la app de correo de tu dispositivo con nuestra direccion lista para usar.'}
+                    </p>
+                  </div>
+                </div>
+              </section>
+            }
+          />
+          <Route
+            path="/faqs"
+            element={
+              <section className="section" id="faqs">
+                <div className="section-heading">
+                  <p className="eyebrow">{content.nav[5].label}</p>
+                  <h2>{content.nav[5].label}</h2>
+                </div>
+                <div className="card-grid">
+                  {content.faqs.map((item) => (
+                    <article key={item.question} className="info-card">
+                      <h3>{item.question}</h3>
+                      <p>{item.answer}</p>
+                    </article>
+                  ))}
+                </div>
+              </section>
+            }
+          />
+          <Route
+            path="/tips"
+            element={
+              <section className="section" id="tips">
+                <div className="section-heading">
+                  <p className="eyebrow">{content.nav[6].label}</p>
+                  <h2>{content.nav[6].label}</h2>
+                </div>
+                <div className="card-grid">
+                  {content.tips.map((tip) => (
+                    <article key={tip.title} className="info-card">
+                      <img className="card-image" src={getTipIllustration(tip.title)} alt={tip.title} />
+                      <h3>{tip.title}</h3>
+                      <p>{tip.description}</p>
+                    </article>
+                  ))}
+                </div>
+              </section>
+            }
+          />
+          <Route
+            path="/area"
+            element={
+              <section className="section" id="area">
+                <div className="section-heading">
+                  <p className="eyebrow">{content.nav[7].label}</p>
+                  <h2>{content.nav[7].label}</h2>
+                </div>
+                <div className="area-layout">
+                  <div className="info-card area-summary-card">
+                    <h3>{language === 'en' ? 'Service areas' : 'Áreas de servicio'}</h3>
+                    <ul className="area-list">
+                      <li>
+                        <button
+                          type="button"
+                          className={`area-list-button ${selectedArea === null ? 'active' : ''}`}
+                          onClick={() => setSelectedArea(null)}
+                          aria-pressed={selectedArea === null}
+                        >
+                          <span className="area-marker" aria-hidden="true">
+                            <svg viewBox="0 0 64 64" role="img">
+                              <rect x="12" y="18" width="40" height="28" rx="6" fill="#b42318" />
+                              <rect x="22" y="12" width="20" height="10" rx="4" fill="#7a4a4a" />
+                              <rect x="28" y="24" width="8" height="14" rx="2" fill="#fff" />
+                            </svg>
+                          </span>
+                          <span className="area-list-content">
+                            <span>{language === 'en' ? 'All locations' : 'Todas las ubicaciones'}</span>
+                            <p>{language === 'en' ? 'Show the full covered service area.' : 'Muestra toda el área de servicio cubierta.'}</p>
+                          </span>
+                        </button>
+                      </li>
+                      {content.area.map((item) => (
+                        <li key={item.title}>
+                          <button
+                            type="button"
+                            className={`area-list-button ${selectedArea === item.title ? 'active' : ''}`}
+                            onClick={() => setSelectedArea(item.title)}
+                            aria-pressed={selectedArea === item.title}
+                          >
+                            <span className="area-marker" aria-hidden="true">
+                              <svg viewBox="0 0 64 64" role="img">
+                                <rect x="12" y="18" width="40" height="28" rx="6" fill="#b42318" />
+                                <rect x="22" y="12" width="20" height="10" rx="4" fill="#7a4a4a" />
+                                <rect x="28" y="24" width="8" height="14" rx="2" fill="#fff" />
+                              </svg>
+                            </span>
+                            <span className="area-list-content">
+                              <span>{item.title}</span>
+                              <p>{item.description}</p>
+                            </span>
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className="map-card">
+                    <iframe
+                      title="Service area map"
+                      src={mapEmbedUrl}
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                      allowFullScreen
+                    />
+                  </div>
+                </div>
+              </section>
+            }
+          />
         </Routes>
       </main>
 
@@ -290,7 +475,9 @@ function AppShell() {
         </div>
         <div className="footer-details">
           <p>{content.footer.hours}</p>
-          <p>{language === 'en' ? 'Payments accepted:' : 'Métodos de pago aceptados:'} {content.footer.payments.join(', ')}</p>
+          <p>
+            {language === 'en' ? 'Payments accepted:' : 'Métodos de pago aceptados:'} {content.footer.payments.join(', ')}
+          </p>
         </div>
       </footer>
     </div>
