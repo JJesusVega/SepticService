@@ -101,9 +101,9 @@ export const siteContent: Record<Language, SiteContent> = {
         title: 'Septic Tank Cleaning',
         description: 'Thorough cleaning and safe removal of sludge to keep your system flowing efficiently.',
         slug: 'septic-tank-cleaning',
-        detailTitle: 'Full septic tank cleaning for reliable performance',
+        detailTitle: 'Commercial Septic Tank Scouring & Debris Removal',
         detailDescription:
-          'We remove built-up solids, inspect the tank condition, and help restore healthy flow before small issues become expensive repairs.',
+          'Heavy daily water usage in commercial properties demands high-capacity waste management. Our commercial tank cleaning service removes compacted sludge and heavy debris using industrial-strength vacuum equipment, preventing costly operational downtime and facility disruptions.',
         highlights: ['Safe sludge removal', 'Inspection included', 'Ideal for homes and commercial properties', 'Payment methods: Cash, Banking Transfer, Deposit, Cheque'],
       },
       {
@@ -162,12 +162,17 @@ export const siteContent: Record<Language, SiteContent> = {
       },
       {
         title: 'Air Pump Installation',
-        description: 'Installation of dependable air systems that support efficient aerobic treatment.',
+        description: 'Residential and commercial aeration solutions with dependable installations for efficient wastewater treatment.',
         slug: 'air-pump-installation',
-        detailTitle: 'Air pump installation for advanced treatment support',
+        detailTitle: 'Residential and commercial air pump installation for efficient treatment',
         detailDescription:
-          'We install dependable air pumps that improve circulation and support aerobic treatment performance.',
-        highlights: ['Efficient aeration', 'Reliable equipment', 'Supports treatment goals', 'Payment methods: Cash, Banking Transfer, Deposit, Cheque'],
+          'Residential wastewater systems require reliable air compression for active aeration, and commercial aerobic treatment demands continuous heavy-duty airflow. We install high-performance pumps and compressors designed to optimize waste breakdown, reduce energy costs, and suppress odors.',
+        highlights: [
+          'Residential Wastewater Air Compressor Setup: Advanced residential treatment systems require reliable air compression for active aeration. We install low-maintenance compressors designed to optimize waste breakdown while keeping energy costs down.',
+          'Commercial Aeration Pump Installation: Commercial aerobic treatment demands continuous, heavy-duty airflow. We supply and install high-output aerator pumps built for demanding commercial duty cycles, ensuring consistent biological breakdown and odor suppression.',
+          'Efficient aeration',
+          'Payment methods: Cash, Banking Transfer, Deposit, Cheque',
+        ],
       },
       {
         title: 'Air Pump Repair',
@@ -279,7 +284,7 @@ export const siteContent: Record<Language, SiteContent> = {
       { label: 'Contacto', href: '#contact' },
       { label: 'Preguntas', href: '#faqs' },
       { label: 'Consejos', href: '#tips' },
-      { label: 'Covertura', href: '#covertura' },
+      { label: 'Cobertura', href: '#cobertura' },
     ],
     hero: {
       eyebrow: 'Soluciones sépticas confiables para hogares y negocios',
@@ -363,12 +368,16 @@ export const siteContent: Record<Language, SiteContent> = {
       },
       {
         title: 'Instalación de bomba de aire',
-        description: 'Instalación de sistemas de aire confiables que apoyan un tratamiento aeróbico eficiente.',
+        description: 'Soluciones de aireación residenciales y comerciales con instalaciones confiables para un tratamiento eficiente.',
         slug: 'instalacion-bomba-aire',
-        detailTitle: 'Instalación de bomba de aire para un soporte avanzado de tratamiento',
+        detailTitle: 'Instalación de bombas de aire residenciales y comerciales para un tratamiento eficiente',
         detailDescription:
-          'Instalamos bombas de aire confiables que mejoran la circulación y apoyan el rendimiento del tratamiento aeróbico.',
-        highlights: ['Aireación eficiente', 'Equipo confiable', 'Apoya metas de tratamiento'],
+          'Los sistemas residenciales de aguas residuales requieren compresión fiable para una aireación activa, y el tratamiento aeróbico comercial exige un flujo continuo y de alto rendimiento. Instalamos bombas y compresores de alto desempeño diseñados para optimizar la degradación de residuos, reducir costos de energía y controlar olores.',
+        highlights: [
+          'Configuración residencial de compresor de aire para aguas residuales: los sistemas residenciales avanzados requieren compresión fiable para una aireación activa. Instalamos compresores de bajo mantenimiento diseñados para optimizar la degradación de residuos y mantener bajos los costos de energía.',
+          'Instalación comercial de bomba de aireación: el tratamiento aeróbico comercial exige un flujo continuo y resistente. Suministramos e instalamos bombas aireadoras de alto rendimiento para ciclos de trabajo comerciales exigentes, garantizando una degradación biológica constante y supresión de olores.',
+          'Aireación eficiente',
+        ],
       },
       {
         title: 'Reparación de bomba de aire',
