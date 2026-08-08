@@ -64,6 +64,8 @@ export type SiteContent = {
     note: string
     hours: string
     payments: string[]
+    partnerNote: string[]
+    partnerList: string[]
   }
   area: AreaItem[]
 }
@@ -273,6 +275,8 @@ export const siteContent: Record<Language, SiteContent> = {
       note: 'Professional septic care with a clean, modern approach.',
       hours: 'Attention hours: Monday to Saturday, 7:00 AM to 6:00 PM',
       payments: ['Cash', 'Banking Transfer', 'Deposit', 'Cheque'],
+      partnerNote: ['We connect with local suppliers and trusted partners for quality service and materials.', 'Our network includes inspection specialists, supply vendors, and design professionals to support your septic needs.'],
+      partnerList: ['Inspection', 'Supply', 'Designer'],
     },
   },
   es: {
@@ -466,6 +470,8 @@ export const siteContent: Record<Language, SiteContent> = {
       note: 'Cuidado séptico profesional con un enfoque limpio y moderno.',
       hours: 'Horario de atención: de lunes a sábado, de 7:00 AM a 6:00 PM',
       payments: ['Efectivo', 'Transferencia bancaria', 'Depósito', 'Cheque'],
+      partnerNote: ['Nos conectamos con proveedores locales y socios de confianza para un servicio y materiales de calidad.', 'Nuestra red incluye especialistas en inspección, proveedores de suministros y profesionales del diseño para apoyar sus necesidades sépticas.'],
+      partnerList: ['Inspección', 'Suministro', 'Diseñador'],
     },
   },
 }

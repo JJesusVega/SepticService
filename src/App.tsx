@@ -469,9 +469,13 @@ function AppShell() {
       </main>
 
       <footer className="footer">
-        <div>
+        <div className="footer-brand">
           <p>{content.footer.brand}</p>
           <p>{content.footer.note}</p>
+        </div>
+        <div className="footer-partners">
+          <p>{content.footer.partnerNote}</p>
+          <p>{language === 'en' ? 'Our trusted partners:' : 'Nuestros socios de confianza:'} {content.footer.partnerList.join(', ')}</p>
         </div>
         <div className="footer-details">
           <p>{content.footer.hours}</p>
@@ -479,6 +483,7 @@ function AppShell() {
             {language === 'en' ? 'Payments accepted:' : 'Métodos de pago aceptados:'} {content.footer.payments.join(', ')}
           </p>
         </div>
+        
       </footer>
     </div>
   )
