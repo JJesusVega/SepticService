@@ -70,6 +70,43 @@ export type SiteContent = {
   area: AreaItem[]
 }
 
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+const phonePattern = /^\+?[\d\s().-]{7,25}$/
+
+const getValidatedContactValue = (
+  value: string | undefined,
+  pattern: RegExp,
+  fieldName: string,
+) => {
+  const trimmedValue = value?.trim()
+
+  if (!trimmedValue) {
+    return undefined
+  }
+
+  if (!pattern.test(trimmedValue)) {
+    throw new Error(`Invalid ${fieldName}. Check the VITE_CONTACT_${fieldName.toUpperCase()} value.`)
+  }
+
+  return trimmedValue
+}
+
+export const validateContactValues = (phone: string | undefined, email: string | undefined) => ({
+  phone: getValidatedContactValue(phone, phonePattern, 'phone'),
+  email: getValidatedContactValue(email, emailPattern, 'email'),
+})
+
+const viteEnvironment = (import.meta as ImportMeta & {
+  env?: Record<string, string | undefined>
+}).env
+
+const validatedContact = validateContactValues(
+  viteEnvironment?.VITE_CONTACT_PHONE,
+  viteEnvironment?.VITE_CONTACT_EMAIL,
+)
+const contactPhone = validatedContact.phone
+const contactEmail = validatedContact.email
+
 export const siteContent: Record<Language, SiteContent> = {
   en: {
     nav: [
@@ -230,8 +267,8 @@ export const siteContent: Record<Language, SiteContent> = {
     contact: {
       title: 'Contact us',
       description: 'Reach out for a quote, a scheduled inspection, or service support.',
-      phone: 'Now serving: TBD',
-      email: 'service@sanchezseptics.com',
+      phone: contactPhone ? `Now serving: ${contactPhone}` : 'Now serving: TBD',
+      email: contactEmail ?? 'service@sanchezseptics.com',
       address: 'Serving the local community with reliable on-site care',
       formTitle: 'Start a conversation',
     },
@@ -437,8 +474,8 @@ export const siteContent: Record<Language, SiteContent> = {
     contact: {
       title: 'Contáctanos',
       description: 'Escríbenos para solicitar una cotización, una inspección o apoyo de servicio.',
-      phone: 'Estamos disponibles en: TBD',
-      email: 'service@sanchezseptics.com',
+      phone: contactPhone ? `Estamos disponibles en: ${contactPhone}` : 'Estamos disponibles en: TBD',
+      email: contactEmail ?? 'service@sanchezseptics.com',
       address: 'Atendiendo a la comunidad local con cuidado en sitio',
       formTitle: 'Inicia una conversación',
     },
