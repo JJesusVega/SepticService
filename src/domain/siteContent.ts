@@ -230,7 +230,7 @@ export const siteContent: Record<Language, SiteContent> = {
     contact: {
       title: 'Contact us',
       description: 'Reach out for a quote, a scheduled inspection, or service support.',
-      phone: '(555) 014-2024',
+      phone: 'Now serving: TBD',
       email: 'service@sanchezseptics.com',
       address: 'Serving the local community with reliable on-site care',
       formTitle: 'Start a conversation',
@@ -437,7 +437,7 @@ export const siteContent: Record<Language, SiteContent> = {
     contact: {
       title: 'Contáctanos',
       description: 'Escríbenos para solicitar una cotización, una inspección o apoyo de servicio.',
-      phone: '(555) 014-2024',
+      phone: 'Estamos disponibles en: TBD',
       email: 'service@sanchezseptics.com',
       address: 'Atendiendo a la comunidad local con cuidado en sitio',
       formTitle: 'Inicia una conversación',
