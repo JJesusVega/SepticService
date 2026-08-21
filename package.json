@@ -8,6 +8,7 @@
     "build": "tsc -b && vite build",
     "build:uat": "tsc -b && vite build --mode uat",
     "build:production": "tsc -b && vite build --mode production",
+    "build:ghpages": "tsc -b && vite build --mode ghpages",
     "lint": "eslint .",
     "preview": "vite preview"
   },

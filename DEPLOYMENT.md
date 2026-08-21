@@ -42,6 +42,35 @@ npm run build:production
 The UAT and production builds both output to `dist/`. Publish that directory
 after the build succeeds. To verify an artifact locally, run `npm run preview`.
 
+## GitHub Pages
+
+GitHub Pages serves project sites from `/<repo-name>/`, so use the dedicated
+`ghpages` build mode, which sets the Vite `base` path to `/SepticService/`:
+
+```sh
+npm ci
+npm run lint
+npm run build:ghpages
+```
+
+Publish the resulting `dist/` directory to the `gh-pages` branch (or the
+branch/folder configured in the repository's Pages settings).
+
+A [.github/workflows/deploy-pages.yml](.github/workflows/deploy-pages.yml)
+workflow builds and deploys automatically on every push to `main` using
+GitHub's official Pages actions. Enable it by setting the repository's
+**Settings → Pages → Source** to "GitHub Actions". Provide the
+`VITE_EMAILJS_*` secrets and, optionally, the `VITE_CONTACT_PHONE` /
+`VITE_CONTACT_EMAIL` repository variables the workflow references.
+
+Because GitHub Pages has no server-side rewrite support for the SPA's browser
+history routes, [public/404.html](public/404.html) redirects unknown paths
+back to the app with the original path encoded in the query string, and
+[index.html](index.html) decodes it before React Router mounts (the
+[rafgraph/spa-github-pages](https://github.com/rafgraph/spa-github-pages)
+technique). If the repository is renamed, update `GITHUB_PAGES_BASE` in
+[vite.config.ts](vite.config.ts) to match.
+
 ## SPA route fallback
 
 The app uses browser history routing. Configure the host to return
@@ -67,3 +96,4 @@ the build job. Select the build command using the deployment target:
 | --- | --- |
 | UAT | `npm run build:uat` |
 | Production | `npm run build:production` |
+| GitHub Pages | `npm run build:ghpages` |
